@@ -1,10 +1,15 @@
 package com.turn2c.apivendas.model;
 
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -18,6 +23,12 @@ public class Vendedor {
 	
 	@NotNull
 	private String nome;
+	
+	@ManyToMany
+	@JoinTable( name = "tb_Vendedor_Cliente",
+			joinColumns = {@JoinColumn(name = "vendedor_id")},
+			inverseJoinColumns = {@JoinColumn(name = "cliente_id")})
+	private List<Cliente> cliente;
 	
 
 	/* Getters and Setters*/
@@ -37,6 +48,15 @@ public class Vendedor {
 		this.nome = nome;
 	}
 
+	public List<Cliente> getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(List<Cliente> cliente) {
+		this.cliente = cliente;
+	}
+
+	
 	
 	
 }
