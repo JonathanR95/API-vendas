@@ -1,6 +1,5 @@
 package com.turn2c.apivendas.model;
 
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +19,6 @@ public class Vendedor {
 	@NotNull
 	private String nome;
 	
-	private List<Cliente> clientes;
 
 	/* Getters and Setters*/
 	public long getId() {
@@ -39,13 +37,6 @@ public class Vendedor {
 		this.nome = nome;
 	}
 
-	public List<Cliente> getClientes() {
-		return clientes;
-	}
-
-	public void setClientes(List<Cliente> clientes) {
-		this.clientes = clientes;
-	}
 	
 	
 }
