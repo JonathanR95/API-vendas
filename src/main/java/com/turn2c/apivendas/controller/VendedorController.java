@@ -1,7 +1,8 @@
 package com.turn2c.apivendas.controller;
 
 import java.util.List;
-import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.turn2c.apivendas.model.Cliente;
 import com.turn2c.apivendas.model.Vendedor;
-import com.turn2c.apivendas.repository.ClienteRepository;
 import com.turn2c.apivendas.repository.VendedorRepository;
 
 @RestController
@@ -28,9 +27,6 @@ public class VendedorController {
 
 	@Autowired
 	private VendedorRepository repository;
-	
-	@Autowired
-	private ClienteRepository clienteRepository;
 	
 	@GetMapping
 	public ResponseEntity<List<Vendedor>> GetAll(){
@@ -54,13 +50,12 @@ public class VendedorController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(vendedor));
 	}
 	
-	@PutMapping("/associarVendedorCliente/{id}")
-	 public ResponseEntity<Optional<Vendedor>> getVendedorCliente(@PathVariable Long id){
-	 Optional<Vendedor> vendedor = repository.findById(id);
-	 Optional<Cliente> cliente = clienteRepository.findById(id);
-	 vendedor.get().setCliente(cliente);
-	 return ResponseEntity.ok(vendedor);
-	 }
+	@PutMapping
+	public ResponseEntity<Vendedor> putVendedor(@Valid @RequestBody Vendedor vendedor){
+		return repository.findById(vendedor.getId()).map(resposta ->{
+			return ResponseEntity.ok().body(repository.save(vendedor));
+		}).orElse(ResponseEntity.notFound().build());
+	}
 	
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable long id) {

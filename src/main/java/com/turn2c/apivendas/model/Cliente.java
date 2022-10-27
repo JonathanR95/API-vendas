@@ -1,8 +1,7 @@
 package com.turn2c.apivendas.model;
 
 
-import java.util.Optional;
-
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,13 +26,13 @@ public class Cliente {
 	
 	@ManyToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
 	@JsonProperty("vendedores")
-	private Optional<Vendedor> vendedores;
+	private List<Vendedor> vendedores;
 
 	/*Metodo Construtor*/
 	
 	public Cliente() {}
 
-	public Cliente(Optional<Vendedor> vendedores) {
+	public Cliente(List<Vendedor> vendedores) {
 		super();
 		this.vendedores = vendedores;
 	}
@@ -55,11 +54,11 @@ public class Cliente {
 		this.nome = nome;
 	}
 
-	public Optional<Vendedor> getVendedores() {
+	public List<Vendedor> getVendedores() {
 		return vendedores;
 	}
 
-	public void setVendedores(Optional<Vendedor> vendedores) {
+	public void setVendedores(List<Vendedor> vendedores) {
 		this.vendedores = vendedores;
 	}
 
