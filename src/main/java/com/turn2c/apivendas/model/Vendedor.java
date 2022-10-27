@@ -1,8 +1,9 @@
 package com.turn2c.apivendas.model;
 
 
-import java.util.List;
+import java.util.Optional;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,12 +25,22 @@ public class Vendedor {
 	@NotNull
 	private String nome;
 	
-	@ManyToMany
+	
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable( name = "tb_Vendedor_Cliente",
 			joinColumns = {@JoinColumn(name = "vendedor_id")},
 			inverseJoinColumns = {@JoinColumn(name = "cliente_id")})
-	private List<Cliente> cliente;
+	private Optional<Cliente> cliente;
 	
+	
+	/*Metodo Construtor*/
+	
+	public Vendedor() {}
+	
+	public Vendedor(Optional<Cliente> cliente) {
+		super();
+		this.cliente = cliente;
+	}
 
 	/* Getters and Setters*/
 	public long getId() {
@@ -48,11 +59,11 @@ public class Vendedor {
 		this.nome = nome;
 	}
 
-	public List<Cliente> getCliente() {
+	public Optional<Cliente> getCliente() {
 		return cliente;
 	}
 
-	public void setCliente(List<Cliente> cliente) {
+	public void setCliente(Optional<Cliente> cliente) {
 		this.cliente = cliente;
 	}
 

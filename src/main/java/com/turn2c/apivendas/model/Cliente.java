@@ -1,7 +1,7 @@
 package com.turn2c.apivendas.model;
 
 
-import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name ="tb_clientes")
@@ -23,9 +25,19 @@ public class Cliente {
 	@NotNull
 	private String nome; 
 	
-	@ManyToMany(mappedBy = "cliente",cascade = CascadeType.ALL)
-	private List<Vendedor> vendedores;
+	@ManyToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+	@JsonProperty("vendedores")
+	private Optional<Vendedor> vendedores;
 
+	/*Metodo Construtor*/
+	
+	public Cliente() {}
+
+	public Cliente(Optional<Vendedor> vendedores) {
+		super();
+		this.vendedores = vendedores;
+	}
+	
 	/* getters e setters*/
 	public Long getId() {
 		return Id;
@@ -43,11 +55,11 @@ public class Cliente {
 		this.nome = nome;
 	}
 
-	public List<Vendedor> getVendedores() {
+	public Optional<Vendedor> getVendedores() {
 		return vendedores;
 	}
 
-	public void setVendedores(List<Vendedor> vendedores) {
+	public void setVendedores(Optional<Vendedor> vendedores) {
 		this.vendedores = vendedores;
 	}
 

@@ -1,6 +1,7 @@
 package com.turn2c.apivendas.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,11 +11,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.turn2c.apivendas.model.Cliente;
 import com.turn2c.apivendas.model.Vendedor;
+import com.turn2c.apivendas.repository.ClienteRepository;
 import com.turn2c.apivendas.repository.VendedorRepository;
 
 @RestController
@@ -24,6 +28,9 @@ public class VendedorController {
 
 	@Autowired
 	private VendedorRepository repository;
+	
+	@Autowired
+	private ClienteRepository clienteRepository;
 	
 	@GetMapping
 	public ResponseEntity<List<Vendedor>> GetAll(){
@@ -38,7 +45,7 @@ public class VendedorController {
 	}
 	
 	@GetMapping("/nome/{nome}")
-	public ResponseEntity <List<Vendedor>> GetByName(@PathVariable String nome){
+	public ResponseEntity<List<Vendedor>> GetByName(@PathVariable String nome){
 		return ResponseEntity.ok(repository.findAllByNomeContainingIgnoreCase(nome));
 	}
 	
@@ -46,6 +53,14 @@ public class VendedorController {
 	public ResponseEntity<Vendedor> post(@RequestBody Vendedor vendedor){
 		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(vendedor));
 	}
+	
+	@PutMapping("/associarVendedorCliente/{id}")
+	 public ResponseEntity<Optional<Vendedor>> getVendedorCliente(@PathVariable Long id){
+	 Optional<Vendedor> vendedor = repository.findById(id);
+	 Optional<Cliente> cliente = clienteRepository.findById(id);
+	 vendedor.get().setCliente(cliente);
+	 return ResponseEntity.ok(vendedor);
+	 }
 	
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable long id) {
